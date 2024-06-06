@@ -80,3 +80,22 @@ print(lol)
 # "%0.5f" in python is f"{lol:.5f}"
 
 print(f"{lol:.5f}")
+
+
+# switch case in python:
+x = 5
+match x:
+    case 1:
+        print("one")
+    case 2:
+        print("two")
+    case 3:
+        print("three")
+    case 4:
+        print("four")
+    case 5:
+        print("five")
+    case _: # default case
+        print("Invalid input")
+        
+# no break statement. Only one among the cases will be executed
