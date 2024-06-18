@@ -1,6 +1,6 @@
-import Python007goodScripting
+import Python007goodScripting as calculator
 def main():
-    print(Python007goodScripting.mult(3,4))
+    print(calculator.mult(3,4))
     
 def incompleteFunction():
     ...
