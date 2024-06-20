@@ -1,57 +1,57 @@
-import numpy as np
-import scipy as sp
-from deepxde.backend import tf
 import deepxde as dde
-import time
-
+import numpy as np
 import matplotlib.pyplot as plt
+from deepxde.backend import tf
 
-def pde(x, y):
-    dy_t = dde.grad.jacobian(y, x, j=1)                     ####
-    dy_xx = dde.grad.hessian(y, x, j=0)                     ####
-    return (dy_t - dy_xx*0.3)                               #### THIS IS THE ONLY PART WE GOTTA CHANGE ACCORDING TO OUR EQUATION
-                                                            ####
+# Define the geometry
+geom = dde.geometry.Rectangle(xmin=[0, 0], xmax=[1, 1])
 
-def func(x):                                                ####
-    return np.sin(np.pi * x[:, 0:1]) * np.exp(-x[:, 1:])    ####
+# Define the PDE
+def pde(x, u):
+    du_xx = dde.grad.hessian(u, x, i=0, j=0)
+    du_yy = dde.grad.hessian(u, x, i=1, j=1)
+    # Using TensorFlow operations for the source term
+    source_term = dde.backend.sin(np.pi * x[:, 0:1]) * dde.backend.sin(np.pi * x[:, 1:2])
+    return du_xx + du_yy + source_term
 
-geom = dde.geometry.Interval(-1,1)                          ####
-timedomain = dde.geometry.TimeDomain(0, 1)                  ####
-geomtime = dde.geometry.GeometryXTime(geom, timedomain)
+# Define the boundary conditions
+def boundary(x, on_boundary):
+    return on_boundary
 
-bc = dde.icbc.DirichletBC(geomtime, func, lambda _, on_boundary: on_boundary)
-ic = dde.icbc.IC(geomtime, func, lambda _, on_initial: on_initial)
+bc = dde.icbc.DirichletBC(geom, lambda x: 0, boundary)
 
-data = dde.data.TimePDE(geomtime, pde, [bc, ic],
-                        num_domain=8000,
-                        num_boundary=2000,
-                        num_initial=3000,
-                        solution=func,
-                        num_test=1000
-                        )
+# Define the data object
+data = dde.data.PDE(
+    geom,
+    pde,
+    bc,
+    num_domain=4000,
+    num_boundary=400,
+    num_test=1000
+)
 
-layer_size = [2] + [32]*3 + [1]                             #### ALSO THIS
+# Define the neural network
+layer_size = [2] + [32]*3 + [1]
 
 activation = 'tanh'
-initializer = 'Glorot uniform'
+initializer =  'Glorot uniform'
+layers = []
+for i, size in enumerate(layer_size):
+  layers.append(Dense(size, activation=activation, kernel_initializer=initializer))
 
-net = dde.maps.FNN(layer_size, activation, initializer)
-model = dde.Model(data, net)
+network = dde.maps.Sequential(layers)
+model = dde.Model(data, network)
 model.compile('adam', lr=0.0001)
+losshistory, train_state = model.train(iterations=10000, display_every=1000)
 
-losshistory, train_state = model.train(epochs=10000)
-
-x_data = np.linspace(-1,1, num=100)
-t_data = np.linspace(0,1, num=100)
+# Predict the solution and plot it
+x_data = np.linspace(0, 1, 2000)
+t_data = np.linspace(0, 1, 2000)
 test_x, test_t = np.meshgrid(x_data, t_data)
 test_domain = np.vstack([test_x.ravel(), test_t.ravel()]).T
 predicted_solution = model.predict(test_domain)
 residual = model.predict(test_domain, operator=pde)
-
 predicted_solution = predicted_solution.reshape(test_x.shape)
 plt.contourf(test_x, test_t, predicted_solution)
 plt.show()
 
-residual = residual.reshape(test_x.shape)
-plt.contourf(test_x, test_t, residual)
-plt.show()
