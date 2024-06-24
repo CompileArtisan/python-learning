@@ -13,8 +13,12 @@ for i in [1,2,4,8]:
 for i in range(4): # range(n) returns an iterable collection of whole numbers until n, i.e. 0,1,2,3,...n
     print(i)
 
+for i in range(1,6): # range(start, end excluded)
+    print(i)
+    
 for i in range(3,13,3): # range(start, end excluded , skip value)
     print(i)
+    
 
 x = [0,1,2,3]
 print(x) # prints: [0, 1, 2, 3]
