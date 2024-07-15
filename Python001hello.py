@@ -20,3 +20,14 @@ print("Hello {}. You are from {}.".format(name,city)) # {} are placeholders for 
 
 # print() is most comparable to System.out.println() in java
 
+
+randomString = '''This is a multiline string.
+It is  enclosed in triple quotes.
+So ig you can write anything here.'''
+print(randomString)
+
+''' 
+Multi-line strings can be used as multiline comments in python.
+'''
+
+"Generally, strings as plain statements in python don't do anything. They are just ignored."

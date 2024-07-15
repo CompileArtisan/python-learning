@@ -11,7 +11,8 @@ class Student:
     
     # class methods in Python
     @classmethod
-    
+    def get():
+        return Student("John", 12345, 20)
     
     def __init__(self, name, rollNumber, age):
         self.name = name
