@@ -54,3 +54,23 @@ print(x)
 # or
 x = [[1]*4 for _ in range(3)]
 print(x)
+
+
+
+l1 = ["cat", "dog", "monkey", "donkey"]
+
+for element in enumerate(l1):
+    print(element) # element is a tuple
+    print(element[0]) # index of the element in the original list
+    print(element[1]) # the actual element in the original list
+    
+for element in l1:
+    print(element) # the same as print(element[1]) in the previous block
+    
+# enumerate also contains an optional secondary parameter: custom index
+l2 = ["cat", "dog", "monkey", "donkey"]
+for index, element in enumerate(l2, 10):
+    print(index, element)
+    
+
+

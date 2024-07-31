@@ -31,3 +31,7 @@ Multi-line strings can be used as multiline comments in python.
 '''
 
 "Generally, strings as plain statements in python don't do anything. They are just ignored."
+
+
+x = 3
+print(x**2)
