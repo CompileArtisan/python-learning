@@ -42,3 +42,15 @@ print(string)
 randomList = [True, 303, "Person"]
 for item in randomList:
     print(item)
+    
+# lists can be multiplied
+x = [0]*4 # 1x4 matrix
+print(x)
+
+# another example
+x = [[1]*4]*3 # 3x4 matrix
+print(x)
+
+# or
+x = [[1]*4 for _ in range(3)]
+print(x)

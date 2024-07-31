@@ -1,14 +1,23 @@
+# Implementation of Graphs, using Adjacency Matrix
+
 import numpy as np
 
-def main():
-    graph = Graph(4 )
-    graph.add_edge(3, 1)
-    graph.add_edge(1,1)
-    print(graph)
-    print(graph.has_selfLoop())
 
+def main():
+    # graph = Graph(4 )
+    # graph.add_edge(3, 1)
+    # print(graph.has_selfLoop())
+    # graph.add_edge(1,1)
+    # print(graph)
+    # print(graph.has_selfLoop())
+    
+    graph = Graph(3)
+    edges = [[1, 2], [0, 2], [0, 1]]
+    graph.add_edges(edges)
+    print(graph)
+     
 class Graph:
-    def __init__(self, n):
+    def __init__(self, n): # n is the number of vertices
         self.graph = np.zeros((n, n))
         self.num_vertices = n
 
@@ -29,6 +38,11 @@ class Graph:
         if 1 in np.diag(self.graph):
             return True
         return False
+    
+    def add_edges(self, edges): # edges is a 2d array. eg. [[1, 2], [0, 2], [0, 1]]
+        for i in range(len(edges)):
+            for j in edges[i]:
+                self.graph[i][j] = 1   
     
         
     
