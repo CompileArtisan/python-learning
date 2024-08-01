@@ -43,6 +43,13 @@ class Graph:
         for i in range(len(edges)):
             for j in edges[i]:
                 self.graph[i][j] = 1   
+                
+    def has_parallel_edge(self):
+        for i in range(self.num_vertices):
+            for j in range(self.num_vertices):
+                if self.graph[i][j] > 1:
+                    return True
+        return False
     
         
     
