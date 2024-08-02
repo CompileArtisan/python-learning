@@ -72,5 +72,12 @@ l2 = ["cat", "dog", "monkey", "donkey"]
 for index, element in enumerate(l2, 10):
     print(index, element)
     
+    
+list = [1, 2, 3, 4]
+list2 = ["lol", "99"]
+list.extend(list2)
+for i in list:
+    print(i)
+
 
 
