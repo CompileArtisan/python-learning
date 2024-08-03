@@ -8,7 +8,7 @@ def main():
     print(graph.has_selfLoop())
     
 class Graph:    
-    def __init__(self, vertices):
+    def __init__(self, vertices): # vertices is a list of vertices. Each vertex is a number.
         self.graph = {}
         for vertex in vertices:
             self.graph[vertex] = []
