@@ -1,0 +1,43 @@
+from collections import deque
+
+def water_jug_bfs(jug1_capacity, jug2_capacity, target):
+    visited = set()
+    queue = deque([(0, 0, [])])  # (jug1, jug2, steps)
+
+    while queue:
+        jug1, jug2, steps = queue.popleft()
+        
+        if jug1 == target or jug2 == target:
+            return steps
+        
+        state = (jug1, jug2)
+        if state in visited:
+            continue
+        visited.add(state)
+
+        # Generate all possible next states
+        next_states = [
+            (jug1_capacity, jug2, steps + [f"Fill jug1: ({jug1_capacity}, {jug2})"]),
+            (jug1, jug2_capacity, steps + [f"Fill jug2: ({jug1}, {jug2_capacity})"]),
+            (0, jug2, steps + [f"Empty jug1: (0, {jug2})"]),
+            (jug1, 0, steps + [f"Empty jug2: ({jug1}, 0)"]),
+            (min(jug1 + jug2, jug1_capacity), max(0, jug1 + jug2 - jug1_capacity), 
+             steps + [f"Pour jug2 to jug1: ({min(jug1 + jug2, jug1_capacity)}, {max(0, jug1 + jug2 - jug1_capacity)})"]),
+            (max(0, jug1 + jug2 - jug2_capacity), min(jug1 + jug2, jug2_capacity), 
+             steps + [f"Pour jug1 to jug2: ({max(0, jug1 + jug2 - jug2_capacity)}, {min(jug1 + jug2, jug2_capacity)})"])
+        ]
+
+        queue.extend(state for state in next_states if state[:2] not in visited)
+
+    return None  # No solution found
+
+# Example usage
+jug1_capacity, jug2_capacity, target = 4, 3, 2
+solution = water_jug_bfs(jug1_capacity, jug2_capacity, target)
+
+if solution:
+    print(f"Steps to measure {target} liters:")
+    for step in solution:
+        print(step)
+else:
+    print("No solution found.")

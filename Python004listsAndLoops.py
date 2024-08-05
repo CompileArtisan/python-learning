@@ -78,6 +78,19 @@ list2 = ["lol", "99"]
 list.extend(list2)
 for i in list:
     print(i)
-
+    
+    
+# concatenate lists
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+list3 = list1 + list2
+print(list3)
+list4 = sum([list1, list2], start = [])
+print(list4)
+# list4 = sum([list1, list2], start = 0) # TypeError: can only concatenate list (not "int") to list
+list5 = sum([list1, list2], start = [0])
+print(list5)
+list6 = sum([list1, list2], start = [0, 0])
+print(list6)
 
 
