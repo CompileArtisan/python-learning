@@ -6,8 +6,14 @@ def main():
     graph.add_edge(1, 1)
     print(graph)
     print(graph.has_selfLoop())
+    graph.remove_edge(1, 1)
+    print(graph)
     
 class Graph:    
+    # Overall Structure:
+    # graph is a dictionary: key=vertex, value=list of edges
+    # Each edge is a tuple (vertex, weight)
+    
     def __init__(self, vertices): # vertices is a list of vertices. Each vertex is a number/character.
         self.graph = {}
         for vertex in vertices:
@@ -27,8 +33,8 @@ class Graph:
         self.graph[v].append((u, weight))
         
     def remove_edge(self, u, v):
-        self.graph[u].remove(v)
-        self.graph[v].remove(u)
+        self.graph[u] = [edge for edge in self.graph[u] if edge[0] != v]
+        self.graph[v] = [edge for edge in self.graph[v] if edge[0] != u]
     
     def has_selfLoop(self):
         for vertex in self.graph:
