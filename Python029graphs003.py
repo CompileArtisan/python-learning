@@ -8,17 +8,23 @@ def main():
     print(graph.has_selfLoop())
     
 class Graph:    
-    def __init__(self, vertices): # vertices is a list of vertices. Each vertex is a number.
+    def __init__(self, vertices): # vertices is a list of vertices. Each vertex is a number/character.
         self.graph = {}
         for vertex in vertices:
             self.graph[vertex] = []
             
     def __str__(self):
-        return f"{self.graph}"
+        result = ""
+        for vertex in self.graph:
+            result += f"{vertex}: "
+            for edge in self.graph[vertex]:
+                result += f"{edge[0]}({edge[1]}) "
+            result += "\n"
+        return result
     
-    def add_edge(self, u, v):   
-        self.graph[u].append(v)
-        self.graph[v].append(u)
+    def add_edge(self, u, v, weight=1):
+        self.graph[u].append((v, weight))
+        self.graph[v].append((u, weight))
         
     def remove_edge(self, u, v):
         self.graph[u].remove(v)
@@ -26,8 +32,9 @@ class Graph:
     
     def has_selfLoop(self):
         for vertex in self.graph:
-            if vertex in self.graph[vertex]:
-                return True
+            for edge in self.graph[vertex]:
+                if vertex == edge[0]:
+                    return True
         return False
     
 if __name__ == "__main__":
