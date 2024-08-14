@@ -1,43 +1,45 @@
-from collections import deque
+# Create the graph
+result_dict = {}
+for v in range(101):
+    lst = [v+1, v+2, v+3, v+4, v+5, v+6]
+    head_base = {1: 38, 4: 14, 9: 31, 17: 7, 21: 42, 28: 84, 51: 67, 54: 34, 62: 19, 64: 60, 72: 91, 80: 99, 87: 36, 93: 73, 95: 75, 98: 79}
+    for key in head_base.keys():
+        if key in lst:
+            index = lst.index(key)
+            lst[index] = head_base[key]
+    result_dict[v] = [(i, 1) for i in lst if i <= 100]  # Add weight 1 to each edge
 
-def water_jug_bfs(jug1_capacity, jug2_capacity, target):
+def breadthFirstSearch(graph, start, end):
+    queue = [(start, [start], 0)]  # (vertex, path, dice throws)
     visited = set()
-    queue = deque([(0, 0, [])])  # (jug1, jug2, steps)
 
     while queue:
-        jug1, jug2, steps = queue.popleft()
+        vertex, path, dice = queue.pop(0)
         
-        if jug1 == target or jug2 == target:
-            return steps
+        if vertex == end:
+            print("Path taken:", ' -> '.join(map(str, path)))
+            return dice
         
-        state = (jug1, jug2)
-        if state in visited:
-            continue
-        visited.add(state)
+        if vertex not in visited:
+            visited.add(vertex)
+            for neighbor, _ in graph[vertex]:
+                if neighbor not in visited:
+                    new_path = path + [neighbor]
+                    if neighbor in head_base and head_base[neighbor] != neighbor:
+                        if neighbor > head_base[neighbor]:
+                            print(f"Snake at {neighbor}, moving down to {head_base[neighbor]}")
+                        else:
+                            print(f"Ladder at {neighbor}, moving up to {head_base[neighbor]}")
+                        new_path.append(head_base[neighbor])
+                        queue.append((head_base[neighbor], new_path, dice + 1))
+                    else:
+                        queue.append((neighbor, new_path, dice + 1))
+    
+    return -1  # If end is not reachable
 
-        # Generate all possible next states
-        next_states = [
-            (jug1_capacity, jug2, steps + [f"Fill jug1: ({jug1_capacity}, {jug2})"]),
-            (jug1, jug2_capacity, steps + [f"Fill jug2: ({jug1}, {jug2_capacity})"]),
-            (0, jug2, steps + [f"Empty jug1: (0, {jug2})"]),
-            (jug1, 0, steps + [f"Empty jug2: ({jug1}, 0)"]),
-            (min(jug1 + jug2, jug1_capacity), max(0, jug1 + jug2 - jug1_capacity), 
-             steps + [f"Pour jug2 to jug1: ({min(jug1 + jug2, jug1_capacity)}, {max(0, jug1 + jug2 - jug1_capacity)})"]),
-            (max(0, jug1 + jug2 - jug2_capacity), min(jug1 + jug2, jug2_capacity), 
-             steps + [f"Pour jug1 to jug2: ({max(0, jug1 + jug2 - jug2_capacity)}, {min(jug1 + jug2, jug2_capacity)})"])
-        ]
+# Run the search
+start = 0
+end = 100
+min_dice_throws = breadthFirstSearch(result_dict, start, end)
 
-        queue.extend(state for state in next_states if state[:2] not in visited)
-
-    return None  # No solution found
-
-# Example usage
-jug1_capacity, jug2_capacity, target = 4, 3, 2
-solution = water_jug_bfs(jug1_capacity, jug2_capacity, target)
-
-if solution:
-    print(f"Steps to measure {target} liters:")
-    for step in solution:
-        print(step)
-else:
-    print("No solution found.")
+print(f"The minimum number of dice throws is: {min_dice_throws}")

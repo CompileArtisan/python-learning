@@ -1,0 +1,40 @@
+def count_islands(matrix):
+    if not matrix:
+        return 0
+
+    def dfs(i, j):
+        # If the current cell is out of bounds or is water, return
+        if i < 0 or i >= len(matrix) or j < 0 or j >= len(matrix[0]) or matrix[i][j] == 0:
+            return
+
+        # Mark the current cell as visited
+        matrix[i][j] = 0
+
+        # Visit all adjacent cells (including diagonals)
+        dfs(i - 1, j)   # Up
+        dfs(i + 1, j)   # Down
+        dfs(i, j - 1)   # Left
+        dfs(i, j + 1)   # Right
+        dfs(i - 1, j - 1)  # Upper-left diagonal
+        dfs(i - 1, j + 1)  # Upper-right diagonal
+        dfs(i + 1, j - 1)  # Lower-left diagonal
+        dfs(i + 1, j + 1)  # Lower-right diagonal
+
+    island_count = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] == 1:
+                dfs(i, j)  # Start a DFS to mark all parts of this island
+                island_count += 1  # Increment island count for each new island found
+
+    return island_count
+
+matrix = [
+    [0, 1, 0, 1, 0],
+    [1, 1, 0, 0, 1],
+    [0, 0, 1, 0, 0],
+    [0, 1, 0, 1, 1],
+    [1, 0, 1, 0, 0],
+]
+
+print(count_islands(matrix))  # Output will be the number of islands
