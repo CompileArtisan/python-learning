@@ -99,3 +99,13 @@ match x:
         print("Invalid input")
         
 # no break statement. Only one among the cases will be executed
+
+
+# multiline statements:
+# you can use backslashes to continue a statement on the next line
+print("Hello \
+World")
+x= 5\
++3 -\
+2
+print(x)
