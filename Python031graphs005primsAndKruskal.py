@@ -30,7 +30,24 @@ def prim(graph, start):
 
 # kruskal's algorithm
 def kruskal(graph, start):
-    ...
+    edges = []
+    for vertex in graph:
+        for neighbor, weight in graph[vertex]:
+            edges.append((vertex, neighbor, weight))
+    edges.sort(key=lambda x: x[2])
+    
+    visited = [start]
+    mst = []
+    
+    while len(visited) < len(graph):
+        min_edge = None
+        for edge in edges:
+            if edge[0] in visited and edge[1] not in visited:
+                min_edge = edge
+                break
+        mst.append(min_edge)
+        visited.append(min_edge[1])
+    return mst
 
     
 if __name__ == "__main__":
