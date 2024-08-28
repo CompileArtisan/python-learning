@@ -10,6 +10,7 @@ def main():
     }
     
     print(prim(graph, 0))
+    print(kruskal(graph, 0))
 
 # prims's algorithm
 def prim(graph, start):
