@@ -5,6 +5,7 @@ def main():
     # On success, match.group() is matched text.
     match = re.search(r'iii', 'piiig')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -14,6 +15,7 @@ def main():
     # . = any char but \n
     match = re.search(r'..g', 'piiig')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -23,14 +25,16 @@ def main():
     # \d = digit char, \w = word char
     match = re.search(r'\d\d\d', 'p123g')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
         
     print('-------------------')
     
-    match = re.search(r'\w\w\w', '@@abcd!!')
+    match = re.search(r'\w', 'adi athadi')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -40,6 +44,7 @@ def main():
     # i+ = one or more i's, as many as possible.
     match = re.search(r'pi+', 'piiig')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -51,6 +56,7 @@ def main():
     # In this example, note that it does not get to the second set of i's.
     match = re.search(r'i+', 'piigiiii')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -61,6 +67,7 @@ def main():
     # Here look for 3 digits, possibly separated by whitespace.
     match = re.search(r'\d\s*\d\s*\d', 'xx1 2   3xx')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -71,6 +78,7 @@ def main():
     # ^ = matches the start of string, so this fails:
     match = re.search(r'^b\w+', 'foobar')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -80,6 +88,7 @@ def main():
     # But without the ^ it succeeds:
     match = re.search(r'b\w+', 'foobar')
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -90,6 +99,7 @@ def main():
     str = 'purple'
     match = re.search(r'^\w+', str)
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
@@ -100,6 +110,7 @@ def main():
     str = 'purple@example.com'
     match = re.search(r'\w+@\w+\.\w+', str)
     if match:
+        print(match)
         print(match.group())
     else:
         print('Not found')
