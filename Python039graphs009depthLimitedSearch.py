@@ -8,18 +8,23 @@ def main():
     graph.add_edge(2, 7)
     graph.add_edge(1, 4)
     graph.add_edge(5, 1)
-    print(depthLimitedSearch(graph.graph, 1, 2))
+    print(depthLimitedSearch(graph.graph, 1, 7, 3)) 
     
-def depthLimitedSearch(graph, start, limit):
-    stack = [(start, 0)]
-    visited = []
-    
-    while stack:
-        vertex, depth = stack.pop()
-        if vertex not in visited and depth < limit:
-            visited.append(vertex)
-            stack.extend((neighbor, depth + 1) for neighbor, _ in graph[vertex] if neighbor not in visited)
-    return visited
+def depthLimitedSearch(graph, start, goal, limit):
+    visited = set()
+    return recursiveDLS(graph, start, goal, limit, visited)
+
+def recursiveDLS(graph, current, goal, limit, visited):
+    if current == goal:
+        return True
+    if limit <= 0:
+        return False
+    visited.add(current)
+    for neighbor in graph[current]:
+        if neighbor not in visited:
+            if recursiveDLS(graph, neighbor, goal, limit-1, visited):
+                return True
+    return False
 
 if __name__ == "__main__":
     main()
