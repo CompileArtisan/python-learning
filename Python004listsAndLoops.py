@@ -72,6 +72,10 @@ l2 = ["cat", "dog", "monkey", "donkey"]
 for index, element in enumerate(l2, 10):
     print(index, element)
     
+list1 = [22,33,44,56]
+print(list(enumerate(list1))) 
+# o/p: [(0, 22), (1, 33), (2, 44), (3, 56)]
+
     
 list = [1, 2, 3, 4]
 list2 = ["lol", "99"]
@@ -94,3 +98,20 @@ list6 = sum([list1, list2], start = [0, 0])
 print(list6)
 
 
+# single line for loop and if statement
+x = [i for i in range(10) if i % 2 == 0]
+print(x)
+
+# this short syntax of for loop and if condition in one line can only be used when you want to store the result in a list or a dictionary
+
+# dictionary functions
+dict1 = {"a": 1, "b": 2, "c": 3}
+print(dict1)
+print(dict1.keys())
+print(dict1.values())
+print(dict1.items())
+print(dict1.get("a"))
+print(dict1.get("d")) # returns None
+print(dict1.get("d", "Not found")) # returns "Not found"
+print(dict1.pop("a")) # removes the key-value pair and returns the value
+print(dict1)
