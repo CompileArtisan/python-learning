@@ -167,6 +167,12 @@ def main():
     # The pattern to search for.
     # The string to search.
     # The maximum number of splits to make.
+    
+    x = "(2+2) * 3*9"
+    print(re.search(r'\d+[\+\-\*x]\d+', x))
+    
+    stringg = "tha quick brown fox is a thatha"
+    print(re.search(r'th(e|a)', stringg))
 
 if __name__ == "__main__":
     main()
