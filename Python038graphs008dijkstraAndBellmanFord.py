@@ -1,5 +1,14 @@
 def main():
-    ...
+    graph = {
+        'A': [('B', 1), ('C', 4)],
+        'B': [('A', 1), ('D', 2), ('E', 5)],
+        'C': [('A', 4), ('F', 3)],
+        'D': [('B', 2), ('G', 6)],
+        'E': [('B', 5), ('G', 2)],
+        'F': [('C', 3), ('G', 1)],
+        'G': [('D', 6), ('E', 2), ('F', 1) ]
+    }
+    print(dijkstra(graph, 'A'))
     
 def dijkstra(graph, start):
     visited = [start]
