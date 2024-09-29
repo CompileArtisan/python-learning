@@ -15,9 +15,7 @@ class Graph:
     # Each edge is a tuple (vertex, weight)
     
     def __init__(self, vertices): # vertices is a list of vertices. Each vertex is a number/character.
-        self.graph = {}
-        for vertex in vertices:
-            self.graph[vertex] = []
+        self.graph = {vertex: [] for vertex in vertices}
             
     def __str__(self):
         result = ""
