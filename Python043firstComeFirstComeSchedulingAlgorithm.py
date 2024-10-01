@@ -33,6 +33,8 @@ def fcfs(table):
         for j in i:
             print(f"{j:<15}", end="")
         print()
+    print("Average waiting time:", sum([x[4] for x in table])/len(table))
+    print("Average turnaround time:", sum([x[5] for x in table])/len(table))
     
     
 if __name__ == "__main__":
