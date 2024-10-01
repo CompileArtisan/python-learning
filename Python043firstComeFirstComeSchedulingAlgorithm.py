@@ -26,9 +26,13 @@ def fcfs(table):
         table[i][4] = table[i-1][3] - table[i][1]
     for i in range(len(table)):
         table[i][5] = table[i][3] - table[i][1]
-    print("ID, AT, BT, CompletionTime, WaitingTime, TurnaroundTime")    
+    for i in ["ProcessID","ArrivalTime", "BurstTime", "CompletionTime", "WaitingTime", "TurnaroundTime"]:
+        print(f"{i:<15}", end="")
+    print()      
     for i in table:
-        print(i)
+        for j in i:
+            print(f"{j:<15}", end="")
+        print()
     
     
 if __name__ == "__main__":
