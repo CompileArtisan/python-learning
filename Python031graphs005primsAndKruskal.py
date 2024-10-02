@@ -1,55 +1,75 @@
-
 def main():
     # simple graph as example
     graph = {
-        0: [(1, 1), (2, 3)],
-        1: [(0, 1), (2, 1), (3, 4), (4, 2)],
-        2: [(0, 3), (1, 1), (3, 1)],
-        3: [(1, 4), (2, 1), (4, 1)],
-        4: [(1, 2), (3, 1)]
+        'A': [('B', 2), ('C', 3)],
+        'B': [('A', 2), ('C', 1), ('D', 4)],
+        'C': [('A', 3), ('B', 1), ('D', 5)],
+        'D': [('B', 4), ('C', 5)]
     }
     
-    print(prim(graph, 0))
-    print(kruskal(graph, 0))
+    print("Prim's Algorithm Output:", prim(graph, 'A'))
+    print("Kruskal's Algorithm Output:", kruskal(graph))
 
-# prims's algorithm
+# Prim's algorithm
 def prim(graph, start):
-    visited = [start]
+    visited = set([start])  # Use set for faster lookup
     edges = []
-    
-    while len(visited) < len(graph):
-        min_edge = None
-        min_weight = float("inf")
-        for vertex in visited:
-            for neighbor, weight in graph[vertex]:
-                if neighbor not in visited and weight < min_weight:
-                    min_edge = (vertex, neighbor)
-                    min_weight = weight
-        edges.append(min_edge)
-        visited.append(min_edge[1])
-    return edges
-
-# kruskal's algorithm
-def kruskal(graph, start):
-    edges = []
-    for vertex in graph:
-        for neighbor, weight in graph[vertex]:
-            edges.append((vertex, neighbor, weight))
-    edges.sort(key=lambda x: x[2])
-    
-    visited = [start]
     mst = []
     
+    # Add edges from start node
+    for neighbor, weight in graph[start]:
+        edges.append((weight, start, neighbor))
+    
     while len(visited) < len(graph):
-        min_edge = None
-        for edge in edges:
-            if edge[0] in visited and edge[1] not in visited:
-                min_edge = edge
+        # Sort edges based on weight
+        edges.sort()
+        
+        # Find the smallest edge that connects to an unvisited node
+        for weight, frm, to in edges:
+            if to not in visited:
+                visited.add(to)
+                mst.append((frm, to, weight))
+                
+                # Add edges from the newly visited node
+                for neighbor, weight in graph[to]:
+                    if neighbor not in visited:
+                        edges.append((weight, to, neighbor))
                 break
-        mst.append(min_edge)
-        visited.append(min_edge[1])
+    
     return mst
 
+# Kruskal's algorithm
+def kruskal(graph):
+    edges = []
+    mst = []
     
+    # Collect all edges from the graph
+    for vertex in graph:
+        for neighbor, weight in graph[vertex]:
+            edges.append((weight, vertex, neighbor))
+    
+    # Sort edges by weight
+    edges.sort()
+    
+    parent = {v: v for v in graph}
+    
+    def find(v):
+        if parent[v] != v:
+            parent[v] = find(parent[v])
+        return parent[v]
+    
+    def union(v1, v2):
+        root1 = find(v1)
+        root2 = find(v2)
+        if root1 != root2:
+            parent[root2] = root1
+    
+    for weight, v1, v2 in edges:
+        if find(v1) != find(v2):
+            mst.append((v1, v2, weight))
+            union(v1, v2)
+    
+    return mst
+
 if __name__ == "__main__":
     main()
