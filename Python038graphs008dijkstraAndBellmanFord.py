@@ -9,6 +9,7 @@ def main():
         'G': [('D', 6), ('E', 2), ('F', 1) ]
     }
     print(dijkstra(graph, 'A'))
+    print(bellmanFord(graph, 'A'))
     
 def dijkstra(graph, start):
     visited = [start]

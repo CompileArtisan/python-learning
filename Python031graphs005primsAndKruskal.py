@@ -13,8 +13,8 @@ def main():
 # Prim's algorithm
 def prim(graph, start):
     visited = set([start])  # Use set for faster lookup
-    edges = []
-    mst = []
+    edges = [] # weight, from, to
+    mst = [] # from, to, weight
     
     # Add edges from start node
     for neighbor, weight in graph[start]:
@@ -29,7 +29,6 @@ def prim(graph, start):
             if to not in visited:
                 visited.add(to)
                 mst.append((frm, to, weight))
-                
                 # Add edges from the newly visited node
                 for neighbor, weight in graph[to]:
                     if neighbor not in visited:
