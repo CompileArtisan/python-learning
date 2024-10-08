@@ -22,23 +22,8 @@ def main():
     sjf(table)
     
 def sjf(table):
-    table.sort(key=lambda x: x[1])
+    table.sort(key=lambda x: x[2])
     table = [x + [0 for i in range(3)] for x in table]
-    table[0][3] = table[0][1] + table[0][2]
-    for i in range(1, len(table)):
-        table[i][3] = table[i-1][3] + table[i][2]
-        table[i][4] = table[i-1][3] - table[i][1]
-    for i in range(len(table)):
-        table[i][5] = table[i][3] - table[i][1]
-    for i in ["ProcessID","ArrivalTime", "BurstTime", "CompletionTime", "WaitingTime", "TurnaroundTime"]:
-        print(f"{i:<15}", end="")
-    print()      
-    for i in table:
-        for j in i:
-            print(f"{j:<15}", end="")
-        print()
-    print("Average waiting time:", sum([x[4] for x in table])/len(table))
-    print("Average turnaround time:", sum([x[5] for x in table])/len(table))
     
     
 if __name__ == "__main__":
