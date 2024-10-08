@@ -1,24 +1,76 @@
-from Bio import Entrez
+from Bio import Entrez, SeqIO
+Entrez.email = "varunadhitya.balaji@gmail.com"
+nucleotide_search = Entrez.read(Entrez.esearch(db="nucleotide", 
+                                            retmax=5, 
+                                            term="sars[Title] AND Homo Sapiens[Organism]",
+                                            sort="PDAT"))
+protein_search = Entrez.read(Entrez.esearch(db="protein", 
+                                            retmax=5, 
+                                            term="sars[Title] AND Homo Sapiens[Organism]",
+                                            sort="PDAT"))
+gene_search = Entrez.read(Entrez.esearch(db="gene", 
+                                            retmax=5, 
+                                            term="sars[Title] AND Homo Sapiens[Organism]",
+                                            sort="PDAT"))
 
-# Set the email address for NCBI
-Entrez.email = "vasavi.cs@gmail.com"
-
-# Search for nucleotide sequences related to "pancreatic cancer" in Homo sapiens
-search_results = Entrez.read(Entrez.esearch(db='nucleotide', retmax=10, term="sars[Title] AND Homo Sapiens[Organism]"))
-
-# Get the list of IDs
-IDs = search_results["IdList"]
-print("Retrieved IDs:", IDs)
-
-# Open the file to save the sequences
-with open("pancreatic_cancer_sequences.txt", "w") as output_file:
-    # Loop through each ID to fetch the sequence
-    for ID in IDs:
+nucleotide_IDs = nucleotide_search["IdList"]
+protein_IDs = protein_search["IdList"]
+gene_IDs = gene_search["IdList"]
+with open("sars_nucleotide.txt", "w") as file:
+    for ID in nucleotide_IDs:
         try:
-            # Fetch the sequence in FASTA format
-            sequence = Entrez.efetch(db="nucleotide", id=ID, rettype="fasta", retmode='text').read()
-            output_file.write(sequence + "\n")
+            sequence = Entrez.efetch(db="nucleotide", id=ID, rettype="fasta", retmode="text").read()
+            file.write(sequence + "\n")
         except Exception as e:
-            print(f"An error occurred with ID {ID}: {e}")
+            print(f"Error occured with nucleotide ID {ID}: ", e)
 
-print("Sequence retrieval and file writing complete.")
+with open("sars_gene.txt", "w") as file:
+    for ID in gene_IDs:
+        try:
+            handle = Entrez.efetch(db="gene", id="100423062", retmode="xml")
+            record = Entrez.read(handle)
+            handle.close()
+            id = record[0]['Entrezgene_locus'][0]['Gene-commentary_accession']
+            fromS = record[0]['Entrezgene_locus'][0]['Gene-commentary_seqs'][0]['Seq-loc_int']['Seq-interval']['Seq-interval_from']
+            toS = record[0]['Entrezgene_locus'][0]['Gene-commentary_seqs'][0]['Seq-loc_int']['Seq-interval']['Seq-interval_to']
+            sequence = Entrez.efetch(db="nucleotide", id=id, rettype="fasta", retmode="text", seq_start=fromS, seq_stop=toS).read()
+            file.write(sequence + "\n")
+        except Exception as e:
+            print(f"Error occured with gene ID {ID}: ", e)
+
+with open("sars_protein.txt", "w") as file:
+    for ID in protein_IDs:
+        try:
+            sequence = Entrez.efetch(db="protein", id=ID, rettype="fasta", retmode="text").read()
+            file.write(sequence + "\n")
+        except Exception as e:
+            print(f"Error occured with protein ID {ID}: ", e)
+print("Sequence retrival complete")
+with open("sars_nucleotide.txt") as file:
+    print("NUCLEOTIDES")
+    print()
+    for seq in SeqIO.parse(file, 'fasta'):
+        print(seq.id, ":")
+        print("-"*len(seq.id) + "--")
+        lengthOfSeq = len(seq.seq)
+        print(f"\tNumber of base pairs = {lengthOfSeq//2}")
+with open("sars_gene.txt") as file:
+    print("NUCLEOTIDES")
+    print()
+    for seq in SeqIO.parse(file, 'fasta'):
+        print(seq.id, ":")
+        print("-"*len(seq.id) + "--")
+        lengthOfSeq = len(seq.seq)
+        print(f"\tNumber of base pairs = {lengthOfSeq//2}")
+
+
+with open("sars_protein.txt") as file:
+    print("NUCLEOTIDES")
+    print()
+    for seq in SeqIO.parse(file, 'fasta'):
+        print(seq.id, ":")
+        print("-"*len(seq.id) + "--")
+        lengthOfSeq = len(seq.seq)
+        print(f"\tNumber of amino acids = {lengthOfSeq}")
+
+# The above code snippet retrieves nucleotide, protein, and gene sequences related to "SARS coronavirus
