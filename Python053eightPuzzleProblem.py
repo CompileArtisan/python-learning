@@ -37,6 +37,22 @@ def heuristic(state, goal_state):
                 misplaced_tiles += 1
     return misplaced_tiles
 
+def generate_possible_moves(state):
+    moves = []
+    zero_pos = find_zero(state)
+    i, j = zero_pos
+    
+    if i > 0:
+        moves.append((-1, 0))  # Move blank up
+    if i < 2:
+        moves.append((1, 0))   # Move blank down
+    if j > 0:
+        moves.append((0, -1))  # Move blank left
+    if j < 2:
+        moves.append((0, 1))   # Move blank right
+    
+    return moves
+
 def eightPuzzle(initial_state, goal_state):
     current_state = initial_state
     moves_made = 0
@@ -49,8 +65,8 @@ def eightPuzzle(initial_state, goal_state):
 
     while improved:
         improved = False
-        best_state = current_state
         possible_moves = generate_possible_moves(current_state)
+        best_state = current_state
         
         for move in possible_moves:
             new_state = apply_move(current_state, move)
@@ -69,21 +85,6 @@ def eightPuzzle(initial_state, goal_state):
         
     return current_state, moves_made, local_maxima, plateau, ridge
 
-def generate_possible_moves(state):
-    moves = []
-    zero_pos = find_zero(state)
-    i, j = zero_pos
-    
-    if i > 0:
-        moves.append((-1, 0))  # Move blank up
-    if i < 2:
-        moves.append((1, 0))   # Move blank down
-    if j > 0:
-        moves.append((0, -1))  # Move blank left
-    if j < 2:
-        moves.append((0, 1))   # Move blank right
-    
-    return moves
 
 
 if __name__ == "__main__":
